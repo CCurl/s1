@@ -58,23 +58,26 @@ f.   (n--)        Output `n` as a floating point number
 
 
 *** MEMORY ***
-    LAYOUT:      [ SYS  | STK    |  FUNCS  |  REGS   | RSTK    | LSTK     | CODE     ]
-    32-bit ints: [ 0-3  |  4-64  |  65-90  |  97-122 | 128-199 | 200-255  | 256-END  ]
-    8-bit bytes: [ 0-15 | 16-259 | 260-363 | 388-491 | 512-799 | 800-1023 | 1024-END ]
-@     (a--n)      Fetch INT  n from S1 address a
-c@    (a--n)      Fetch BYTE n from S1 address a
-!     (n a--)     Store INT  n to S1 address a
-c!    (n a--)     Store BYTE n to S1 address a
+    Layout:      [ SYS  | STK    |  FUNCS  |  REGS   | RSTK    | LSTK     | CODE/FREE ]
+    32-bit ints: [ 0-3  |  4-64  |  65-90  |  97-122 | 128-199 | 200-255  |  256-END  ]
+    8-bit bytes: [ 0-15 | 16-259 | 260-363 | 388-491 | 512-799 | 800-1023 | 1024-END  ]
+    The default memory size is 64KB.
+@     (a--n)      Fetch INT  n from S1 INT address a (byte offset n*4)
+!     (n a--)     Store INT  n to S1 INT address a (byte offset n*4)
+c@    (a--n)      Fetch BYTE n from S1 BYTE address a
+c!    (n a--)     Store BYTE n to S1 BYTE address a
 
 
 *** REGISTERS ***
     NOTE: A register name is a single lowercase character, a-z.
 a@    (--n)       Fetch of register `a`.
 a!    (n--)       Store (n) to register `a`.
-a+    (--)        Increment `a`.
-a-    (--)        Decrement `a`.
 a@+   (--n)       Fetch `a`, then increment `a`.
 a@-   (--n)       Fetch `a`, then decrement `a`.
+a!+   (n--)       Store (n) to register `a`, then increment `a`.
+a!-   (n--)       Store (n) to register `a`, then decrement `a`.
+a+    (--)        Increment `a`.
+a-    (--)        Decrement `a`.
 
 
 *** FUNCTIONS ***
@@ -83,8 +86,8 @@ a@-   (--n)       Fetch `a`, then decrement `a`.
 X     (?--?)      Call function `X`.
 :     (--)        End function definition (compile ';').
 ;     (--)        Return from function.
-    NOTE: 1) When in a WHILE loop, unwind the WHILE stack first using (^W;).
-          2) When in a FOR loop, unwind the FOR stack first using (^F;).
+    NOTES: 1. When in a WHILE loop, unwind the WHILE stack first using (^W;).
+           2. When in a FOR loop, unwind the FOR stack first using (^F;).
 0@    (--n)       n: HERE
 
 
@@ -116,15 +119,17 @@ X     (?--?)      Call function `X`.
 
 
 *** CONDITIONS/LOOPS/FLOW CONTROL ***
-^I    (--n)       Index of the current FOR stack.
+^I    (--n)       Index of the current FOR loop.
 ^F    (--)        Unwind the FOR stack.
 ^W    (--)        Unwind the WHILE stack.
-^T    (--n)       n: Timer (clock())
+^O    (n--)       n: the BYTE offset for a string to print.
 ^Y    (n--)       n: the BYTE offset for a string to send to system().
+^T    (--n)       n: Timer (clock())
+^V    (--n)       n: The version of S1.
 ^X    (--)        Exit S1
 
 
-*** FILE ***
+*** FILE Operations ***
 fO    (a n--f)    OPEN  - n: 0=>READ, else WRITE (usage: "file.txt" 0 fO)
 fC    (f--)       CLOSE - f: file handle
 fR    (f--f c)    FREAD - f: file handle, c: char read (0 if EOF)
