@@ -23,6 +23,10 @@ H                     0(print "Hello World!")
 95[^I32+#.": ",10,]   0(print the ascii table)
 a@ 0fO#(fR{,fR}fC)    0(print the contents of the file named by a)
 ```
+## Building S1
+- Windows: there is a .sln file, x86 config only.
+- Linux: there is a makefile.
+
 ## S1 Reference
 ```
 *** STACK ***
