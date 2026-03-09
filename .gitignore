@@ -1,1 +1,4 @@
-s1
+/.vs
+/Debug
+/Release
+/s1.vcxproj.user

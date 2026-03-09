@@ -23,6 +23,10 @@ H                     0(print "Hello World!")
 95[^I32+#.": ",10,]   0(print the ascii table)
 a@ 0fO#(fR{,fR}fC)    0(print the contents of the file named by a)
 ```
+## Building S1
+- Windows: there is a .sln file, x86 config only.
+- Linux: there is a makefile.
+
 ## S1 Reference
 ```
 *** STACK ***
@@ -54,13 +58,14 @@ f.   (n--)        Output `n` as a floating point number
 
 
 *** MEMORY ***
-    LAYOUT:      [ SYS  | STK    |  FUNCS  |  REGS   | RSTK    | LSTK     | CODE     ]
-    32-bit ints: [ 0-3  |  4-64  |  65-90  |  97-122 | 128-199 | 200-255  | 256-END  ]
-    8-bit bytes: [ 0-15 | 16-259 | 260-363 | 388-491 | 512-799 | 800-1023 | 1024-END ]
-@     (a--n)      Fetch INT  n from S1 address a
-c@    (a--n)      Fetch BYTE n from S1 address a
-!     (n a--)     Store INT  n to S1 address a
-c!    (n a--)     Store BYTE n to S1 address a
+    Layout:      [ SYS  | STK    |  FUNCS  |  REGS   | RSTK    | LSTK     | CODE/FREE ]
+    32-bit ints: [ 0-3  |  4-64  |  65-90  |  97-122 | 128-199 | 200-255  |  256-END  ]
+    8-bit bytes: [ 0-15 | 16-259 | 260-363 | 388-491 | 512-799 | 800-1023 | 1024-END  ]
+    The default memory size is 64KB.
+@     (a--n)      Fetch INT  n from S1 INT address a (byte offset n*4)
+!     (n a--)     Store INT  n to S1 INT address a (byte offset n*4)
+c@    (a--n)      Fetch BYTE n from S1 BYTE address a
+c!    (n a--)     Store BYTE n to S1 BYTE address a
 
 
 *** REGISTERS ***
@@ -120,10 +125,11 @@ X     (?--?)      Call function `X`.
 ^O    (n--)       n: the BYTE offset for a string to print.
 ^Y    (n--)       n: the BYTE offset for a string to send to system().
 ^T    (--n)       n: Timer (clock())
+^V    (--n)       n: The version of S1.
 ^X    (--)        Exit S1
 
 
-*** FILE ***
+*** FILE Operations ***
 fO    (a n--f)    OPEN  - n: 0=>READ, else WRITE (usage: "file.txt" 0 fO)
 fC    (f--)       CLOSE - f: file handle
 fR    (f--f c)    FREAD - f: file handle, c: char read (0 if EOF)
