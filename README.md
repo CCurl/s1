@@ -67,10 +67,12 @@ c!    (n a--)     Store BYTE n to S1 address a
     NOTE: A register name is a single lowercase character, a-z.
 a@    (--n)       Fetch of register `a`.
 a!    (n--)       Store (n) to register `a`.
-a+    (--)        Increment `a`.
-a-    (--)        Decrement `a`.
 a@+   (--n)       Fetch `a`, then increment `a`.
 a@-   (--n)       Fetch `a`, then decrement `a`.
+a!+   (n--)       Store (n) to register `a`, then increment `a`.
+a!-   (n--)       Store (n) to register `a`, then decrement `a`.
+a+    (--)        Increment `a`.
+a-    (--)        Decrement `a`.
 
 
 *** FUNCTIONS ***
@@ -79,8 +81,8 @@ a@-   (--n)       Fetch `a`, then decrement `a`.
 X     (?--?)      Call function `X`.
 :     (--)        End function definition (compile ';').
 ;     (--)        Return from function.
-    NOTE: 1) When in a WHILE loop, unwind the WHILE stack first using (^W;).
-          2) When in a FOR loop, unwind the FOR stack first using (^F;).
+    NOTES: 1. When in a WHILE loop, unwind the WHILE stack first using (^W;).
+           2. When in a FOR loop, unwind the FOR stack first using (^F;).
 0@    (--n)       n: HERE
 
 
@@ -112,11 +114,12 @@ X     (?--?)      Call function `X`.
 
 
 *** CONDITIONS/LOOPS/FLOW CONTROL ***
-^I    (--n)       Index of the current FOR stack.
+^I    (--n)       Index of the current FOR loop.
 ^F    (--)        Unwind the FOR stack.
 ^W    (--)        Unwind the WHILE stack.
-^T    (--n)       n: Timer (clock())
+^O    (n--)       n: the BYTE offset for a string to print.
 ^Y    (n--)       n: the BYTE offset for a string to send to system().
+^T    (--n)       n: Timer (clock())
 ^X    (--)        Exit S1
 
 

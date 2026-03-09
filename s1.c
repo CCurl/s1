@@ -48,7 +48,7 @@ static int sb=4, s, rb='z', r, fb=128, lb=200, cb=(256*4), l=200, c, h, p, t, u;
             RCASE '+': st.f[s-1]+=st.f[s]; s--;   RCASE '-': st.f[s-1]-=st.f[s]; s--;
             RCASE 'F': if (lb<l) { l-=3; }        RCASE 'W': if (lb<l) { lb--; }
             RCASE 'Y': system(&st.b[TOS]); s--;   RCASE 'I': st.i[++s]=st.i[l];
-            RCASE 'X': exit(0); } }
+            RCASE 'X': exit(0);                   RCASE 'O': printf("%s",&st.b[TOS]); s--; } }
 /*  _  */ void f95() { TOS=-TOS; }
 /*  `  */ void f96() { y=ex; while ((31<BP) && (BP!='`')) { *(y++)=BPP; } *y=0; ++p; system(ex); }
 /* a-z */ void az()  { if (BP=='@') { st.i[++s]=st.i[u]; ++p; }
@@ -76,10 +76,10 @@ void R(int x) { s=(s<sb)?(sb-1):s; r=rb; l=lb; p=x; while (p) { u=BPP; q[u](); }
 void L() { y=&st.b[h]; printf("\ns1:("); fSTK(); printf(")>"); fgets(y, 128, stdin); R(h); }
 int main(int argc, char *argv[]) {
     s=sb-1; h=cb; u=SZ-1024; for (int i=0; i<(SZ/4); i++) { st.i[i]=0; }
-    st.i[0]=h; st.i['a']=argc; for (int i=1; i < argc; ++i) {
+    st.i[0]=h; st.i['z']=argc; for (int i=1; i < argc; ++i) {
         y=argv[i]; t=atoi(y);
-        if ((t) || (y[0]=='0' && y[1]==0)) { st.i['a'+i]=t; }
-        else { st.i['a'+i]=u; for (int j=0; y[j]; j++) { st.b[u++]=y[j]; } st.b[u++]=0; }
+        if ((t) || (y[0]=='0' && y[1]==0)) { st.i['z'-i]=t; }
+        else { st.i['z'-i]=u; for (int j=0; y[j]; j++) { st.b[u++]=y[j]; } st.b[u++]=0; }
     }
     if ((argc>1) && (argv[1][0]!='-')) { FILE *fp=fopen(argv[1], "rb"); 
         if (fp) {while ((c=fgetc(fp))!=EOF) { st.b[h++]=(31<c)?c:32; } fclose(fp); st.i[0]=h; R(cb); }
