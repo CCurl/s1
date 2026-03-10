@@ -71,10 +71,10 @@ void (*q[127])()={ X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X
     AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,f91,f92,f93,f94,f95,f96,
     az,az,f99,az,az,f102,az,az,az,az,az,az,az,az,az,az,az,az,az,az,az,az,az,az,az,az,f123,f124,f125,f126 };
 void R(int x) { s=(s<sb)?(sb-1):s; r=rb; l=lb; p=x; while (p) { u=BPP; q[u](); } }
-void L() { y=&st.b[h]; printf("\ns1:("); fSTK(); printf(")>"); fgets(y, 128, stdin); R(h); }
+void L() { printf("\ns1:("); fSTK(); printf(")>"); fgets(&st.b[h], 128, stdin); R(h); }
 int main(int argc, char *argv[]) {
     s=sb-1; h=cb; u=SZ-1024; for (int i=0; i<(SZ/4); i++) { st.i[i]=0; }
-    st.i[0]=h; st.i['z']=argc; for (int i=1; i < argc; ++i) {
+    st.i[0]=h; st.i['z']=argc; for (int i=1; i<argc; ++i) {
         y=argv[i]; t=atoi(y);
         if ((t) || (y[0]=='0' && y[1]==0)) { st.i['z'-i]=t; }
         else { st.i['z'-i]=u; for (int j=0; y[j]; j++) { st.b[u++]=y[j]; } st.b[u++]=0; }
