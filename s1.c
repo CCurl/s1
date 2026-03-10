@@ -4,14 +4,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#define SZ    256*1024
+#define SZ    64*1024
 #define TOS   st.i[s]
 #define NOS   st.i[s-1]
 #define BP    st.b[p]
 #define BPP   st.b[p++]
 #define RCASE return; case
 static union { float f[SZ/4]; long i[SZ/4]; char b[SZ]; } st; static char ex[80], *y;
-static int sb=4, s, rb='z', r, lb=200, l=200, cb=(256*4), h, p, t, u;
+static int sb=4, s, rb=128, r, lb=200, l=200, cb=(256*4), h, p, t, u;
 /* <33 */ void N() {} void X() { if (u && (u!=10)) printf("-IR %d (%c)?", u, u); p=0; }
 /*  !  */ void f33() { st.i[TOS]=NOS; s-=2; }
 /*  "  */ void f34() { while (BP!='"') { putchar(BPP); } ++p; }
@@ -30,7 +30,7 @@ static int sb=4, s, rb='z', r, lb=200, l=200, cb=(256*4), h, p, t, u;
           void nS() { u=1; t=0; while (('0'<=BP)&&(BP<='9')) { t=(t*10)+BPP-'0'; u*=10; } }
 /* 0-9 */ void n09() { --p; nS(); st.i[++s]=t; if (BP!='.') { return; }
             ++p; nS(); st.f[s]=(float)st.i[s]; st.f[s]+=((float)t/(float)u); }
-/*  :  */ void f58() { u=BPP; if ((BP<'0')||('9'<BP)) { return; } st.i[u] = p;
+/*  :  */ void f58() { u=BPP; if ((u<'A')||('Z'<u)) { return; } st.i[u]=p;
             while (BP && (BP!=':')) { ++p; } BPP=';'; st.i[0]=h=p; }
 /*  ;  */ void f59() { if (rb<r) { p=st.i[r--]; } else { r=rb; p=0; } }
 /*  <  */ void f60() { t=TOS; u=NOS; s--; TOS=(u<t)?-1:0; if (BP=='=') { ++p; TOS=(u<=t)?-1:0; } }
