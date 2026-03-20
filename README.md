@@ -70,6 +70,7 @@ c!    (n a--)     Store BYTE n to S1 BYTE address a
 
 *** REGISTERS ***
     NOTE: A register name is a single lowercase character, a-z.
+    NOTE: 'c' and 'f' are prefixes for other functionality.
 a@    (--n)       Fetch of register `a`.
 a!    (n--)       Store (n) to register `a`.
 a@+   (--n)       Fetch `a`, then increment `a`.
