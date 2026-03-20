@@ -27,9 +27,9 @@ static int sb=4, s, rb=128, r, lb=200, l=200, cb=(256*4), h, p, t, u;
 /*  -  */ void f45() { if (BP=='-') { --TOS; p++; } else { NOS -= TOS; s--; } }
 /*  .  */ void f46() { printf("%ld", st.i[s--]); }
 /*  /  */ void f47() { NOS /= TOS; s--; }
-          void nS() { u=1; t=0; while (('0'<=BP)&&(BP<='9')) { t=(t*10)+BPP-'0'; u*=10; } }
-/* 0-9 */ void n09() { --p; nS(); st.i[++s]=t; if (BP!='.') { return; }
-            ++p; nS(); st.f[s]=(float)st.i[s]; st.f[s]+=((float)t/(float)u); }
+          void nSub() { u=1; t=0; while (('0'<=BP)&&(BP<='9')) { t=(t*10)+BPP-'0'; u*=10; } }
+/* 0-9 */ void n09() { --p; nSub(); st.i[++s]=t; if (BP!='.') { return; }
+            ++p; nSub(); st.f[s]=(float)st.i[s]; st.f[s]+=((float)t/(float)u); }
 /*  :  */ void f58() { u=BPP; if ((u<'A')||('Z'<u)) { return; } st.i[u]=p;
             while (BP && (BP!=':')) { ++p; } BPP=';'; st.i[0]=h=p; }
 /*  ;  */ void f59() { if (rb<r) { p=st.i[r--]; } else { r=rb; p=0; } }
