@@ -45,6 +45,15 @@ _  (a--b)         b: -a             (NEGATE)
 /   (a b--q)      q: a/b
 &   (a b--r q)    q: Quotient, r: Remainder
 
+*** MEMORY ***
+    Layout:      [ SYS  | STK    |  FUNCS  |  REGS   | RSTK    | LSTK     | CODE/FREE ]
+    32-bit ints: [ 0-3  |  4-64  |  65-90  |  97-122 | 128-199 | 200-255  |  256-END  ]
+    8-bit bytes: [ 0-15 | 16-259 | 260-363 | 388-491 | 512-799 | 800-1023 | 1024-END  ]
+    The default memory size is 64KB.
+@     (a--n)      Fetch INT  n from S1 INT address a (byte offset n*4)
+!     (n a--)     Store INT  n to S1 INT address a (byte offset n*4)
+c@    (a--n)      Fetch BYTE n from S1 BYTE address a
+c!    (n a--)     Store BYTE n to S1 BYTE address a
 
 *** FLOATING POINT ***
 N.N  (--n)        n: a floating point number
@@ -56,21 +65,9 @@ f<   (a b--a f)   f: if (a < b) then -1 else 0
 f>   (a b--a f)   f: if (a > b) then -1 else 0
 f.   (n--)        Output `n` as a floating point number
 
-
-*** MEMORY ***
-    Layout:      [ SYS  | STK    |  FUNCS  |  REGS   | RSTK    | LSTK     | CODE/FREE ]
-    32-bit ints: [ 0-3  |  4-64  |  65-90  |  97-122 | 128-199 | 200-255  |  256-END  ]
-    8-bit bytes: [ 0-15 | 16-259 | 260-363 | 388-491 | 512-799 | 800-1023 | 1024-END  ]
-    The default memory size is 64KB.
-@     (a--n)      Fetch INT  n from S1 INT address a (byte offset n*4)
-!     (n a--)     Store INT  n to S1 INT address a (byte offset n*4)
-c@    (a--n)      Fetch BYTE n from S1 BYTE address a
-c!    (n a--)     Store BYTE n to S1 BYTE address a
-
-
 *** REGISTERS ***
     NOTE: A register name is a single lowercase character, a-z.
-    NOTE: 'c' and 'f' are prefixes for other functionality.
+    NOTE: 'c' and 'f' are reserved for memory and floating point operations.
 a@    (--n)       Fetch of register `a`.
 a!    (n--)       Store (n) to register `a`.
 a@+   (--n)       Fetch `a`, then increment `a`.
@@ -79,7 +76,6 @@ a!+   (n--)       Store (n) to register `a`, then increment `a`.
 a!-   (n--)       Store (n) to register `a`, then decrement `a`.
 a+    (--)        Increment `a`.
 a-    (--)        Decrement `a`.
-
 
 *** FUNCTIONS ***
     NOTE: A function name is a single UPPERCASE character, A-Z.
@@ -90,7 +86,6 @@ X     (?--?)      Call function `X`.
     NOTES: 1. When in a WHILE loop, unwind the WHILE stack first using (^W;).
            2. When in a FOR loop, unwind the FOR stack first using (^F;).
 0@    (--n)       n: HERE
-
 
 *** INPUT/OUTPUT ***
 .      (n--)      Output `n` as a decimal
@@ -103,7 +98,6 @@ X     (?--?)      Call function `X`.
 `XXX`  (--)       Executes "XXX" as a shell command (ie - system(xxx))
 |XXX|  (A--B)     Copies XXX[null] to BYTE address A. B: Next char after the [null]
 ?      (--c)      c: next character from STDIN (0 if EOF)
-
 
 *** CONDITIONS/LOOPS/FLOW CONTROL ***
 <     (a b--f)    f: if (a <  b) then -1 else 0.
@@ -118,17 +112,16 @@ X     (?--?)      Call function `X`.
 {     (f--f)      BEGIN: if (f == 0) skip to next '}'.
 }     (f--f?)     WHILE: if (f != 0) jump to opening '{', else drop f and continue.
 
-
 *** CONDITIONS/LOOPS/FLOW CONTROL ***
 ^I    (--n)       Index of the current FOR loop.
 ^F    (--)        Unwind the FOR stack.
-^W    (--)        Unwind the WHILE stack.
 ^O    (n--)       n: the BYTE offset for a string to print.
-^Y    (n--)       n: the BYTE offset for a string to send to system().
+^S    (--)        Print the stack.
 ^T    (--n)       n: Timer (clock())
+^Y    (n--)       n: the BYTE offset for a string to send to system().
 ^V    (--n)       n: The version of S1.
-^X    (--)        Exit S1
-
+^W    (--)        Unwind the WHILE stack.
+^^    (--)        Exit S1
 
 *** FILE Operations ***
 fO    (a n--f)    OPEN  - n: 0=>READ, else WRITE (usage: "file.txt" 0 fO)

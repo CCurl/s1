@@ -12,6 +12,7 @@
 #define RCASE return; case
 static union { float f[SZ/4]; long i[SZ/4]; char b[SZ]; } st; static char ex[80], *y;
 static int sb=4, s, rb=128, r, lb=200, l=200, cb=(256*4), h, p, t, u;
+void fSTK() { for (int i=sb; i<=s; i++) { printf("%c%ld", (i==sb)?0:32, st.i[i]); } }
 /* <33 */ void N() {} void X() { if (u && (u!=10)) printf("-IR %d (%c)?", u, u); p=0; }
 /*  !  */ void f33() { st.i[TOS]=NOS; s-=2; }
 /*  "  */ void f34() { while (BP!='"') { putchar(BPP); } ++p; }
@@ -45,8 +46,8 @@ static int sb=4, s, rb=128, r, lb=200, l=200, cb=(256*4), h, p, t, u;
 /*  ^  */ void f94() { switch (BPP) {           case 'T': st.i[++s] = clock();
             RCASE 'I': st.i[++s] = st.i[l];    RCASE 'Y': system(&st.b[TOS]); s--;
             RCASE 'W': if (lb<l) { lb--; }     RCASE 'F': l-=3; if (lb<l) { l=lb; }
-            RCASE 'V': st.i[++s] = 20260309;   RCASE 'O': printf("%s", &st.b[TOS]); s--;
-            RCASE 'X': exit(0); } }
+            RCASE 'V': st.i[++s] = 20260329;   RCASE 'O': printf("%s", &st.b[TOS]); s--;
+            RCASE 'S': fSTK();                 RCASE '^': exit(0); } }
 /*  _  */ void f95() { TOS=-TOS; }
 /*  `  */ void f96() { y=ex; while ((31<BP) && (BP!='`')) { *(y++)=BPP; } *y=0; ++p; system(ex); }
 /* a-z */ void az()  { if (BP=='@') { st.i[++s]=st.i[u]; ++p; }
@@ -65,13 +66,13 @@ static int sb=4, s, rb=128, r, lb=200, l=200, cb=(256*4), h, p, t, u;
 /*  |  */ void f124() { while (BP!='|') { st.b[TOS++]=BPP; } st.b[TOS++]=0; ++p; }
 /*  }  */ void f125() { if (TOS) { p=st.i[l]; } else { --l; --s; } }
 /*  ~  */ void f126() { TOS=TOS?0:-1; }
-void fSTK() { for (int i=sb; i<=s; i++) { printf("%c%ld", (i==sb)?0:32, st.i[i]); } }
 void (*q[127])()={ X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,N,f33,f34,f35,f36,f37,f38,
     f39,f40,N,f42,f43,f44,f45,f46,f47,n09,n09,n09,n09,n09,n09,n09,n09,n09,n09,f58,f59,f60,f61,f62,f63,f64,
     AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,AZ,f91,f92,f93,f94,f95,f96,
     az,az,f99,az,az,f102,az,az,az,az,az,az,az,az,az,az,az,az,az,az,az,az,az,az,az,az,f123,f124,f125,f126 };
 void R(int x) { s=(s<sb)?(sb-1):s; r=rb; l=lb; p=x; while (p) { u=BPP; q[u](); } }
-void L() { printf("\ns1:("); fSTK(); printf(")>"); fgets(&st.b[h], 128, stdin); R(h); }
+void P() { printf("\ns1:("); fSTK(); printf(")>"); }
+void L() { P(); y=&st.b[h]; if (fgets(y, 128, stdin)!= y) { exit(0); } R(h); }
 int main(int argc, char *argv[]) {
     s=sb-1; h=cb; u=SZ-1024; for (int i=0; i<(SZ/4); i++) { st.i[i]=0; }
     st.i[0]=h; st.i['z']=argc; for (int i=1; i<argc; ++i) {
